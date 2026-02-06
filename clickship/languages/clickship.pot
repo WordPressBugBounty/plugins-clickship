@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the ClickShip package.
 msgid ""
 msgstr ""
-"Project-Id-Version: ClickShip 1.0.0\n"
+"Project-Id-Version: ClickShip 1.0.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/clickship\n"
 "POT-Creation-Date: 2022-09-19 07:24:05+00:00\n"
 "MIME-Version: 1.0\n"

@@ -220,10 +220,14 @@ if ( ! class_exists( 'WC_Clickship_Shipping_Rates_Method' ) ) {
 		$items = array();
 
 		foreach ( $package['contents'] as $key => $value ) {
+			$product = $value['data'];  // WC_Product object
+			$currency = get_woocommerce_currency(); // current currency shown to the buyer
 			$item = array(
+				'currency' => $currency,
 				'quantity' => $value ['quantity'],
 				'product_id' => $value ['product_id'],
-				'variant_id' => $value ['variation_id']
+				'variant_id' => $value ['variation_id'],
+				'price' => wc_get_price_to_display($product) // multi-currency safe
 			);			
 			array_push($items, $item);
 		}
@@ -264,6 +268,7 @@ if ( ! class_exists( 'WC_Clickship_Shipping_Rates_Method' ) ) {
 				
 				$input_data['items'] = $this->getItems($package);
 				$input_data['origin'] = $this->getOriginAddress();
+				$input_data['currency'] = get_woocommerce_currency(); // current currency shown to the buyer
 				$input_data['destination'] = $this->getDestinationAddress($package);
 			
 				$response = $this->post_consumer_data( $input_data, $url );
@@ -288,14 +293,15 @@ if ( ! class_exists( 'WC_Clickship_Shipping_Rates_Method' ) ) {
 			//echo '<pre>'; print_r($response); echo '</pre>';
 			foreach ($response['data'] as $key => $value) {
 				$metadata = array(
-					'cs_service_code' => sanitize_text_field($value['service_code']),
-					'cs_service_name' => sanitize_text_field($value['service_name'])
+					'CSQuoteId' => sanitize_text_field($value['csQuoteId'] ?? ''),
+					'cs_service_name' => sanitize_text_field($value['service_name'] ?? ''),
+					'description' => sanitize_text_field($value['description'] ?? '')
 				);
 				
 				$this->serviveName	= sanitize_text_field($value['service_name']);
 								
 				if($value ['transitDays'] > 0) {
-					$this->transitDays	= sanitize_text_field($value['transitDays']) + 1;
+					$this->transitDays	= sanitize_text_field($value['transitDays']);
 					$this->serviveName	= sprintf( __('%s (%s business days)','clickship'), sanitize_text_field($value['service_name']), sanitize_text_field($this->transitDays) );
 				}
 

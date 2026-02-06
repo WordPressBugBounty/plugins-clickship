@@ -2,9 +2,9 @@
 Contributors: clickshipfc
 Tags: shipping, custom shipping, weight based shipping, shipping methods, shipping automation
 Requires at least: 5.8
-Tested up to: 6.7.1
+Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 1.0.4
+Stable tag: 1.0.9
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -96,3 +96,11 @@ Using your product dimensions and weights, and preferably with your box dimensio
 == Upgrade Notice ==
 = 1.0.0 =
 This is the first release of the plugin.
+
+= 1.0.6 =
+Providing DDP rates at checkout. 
+Minor bug fixes.
+
+= 1.0.9 =
+Minor bug fixes.
+Tested upto Wordpress 6.9 version

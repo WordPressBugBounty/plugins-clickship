@@ -76,7 +76,20 @@ class Clickship_Admin {
 		
 		add_filter( 'woocommerce_shipping_methods', array(&$this,'add_clickship_shipping_rates'));
 		add_action( 'woocommerce_shipping_init', array(&$this,'add_clickship_shipping_rates_init'));
-			
+		/**
+	 	* To show DDP description.
+		*
+		* @since    1.0.5
+		*/
+		add_action('woocommerce_after_shipping_rate', function($rate) {
+		    $meta = $rate->get_meta_data();
+
+			if ( isset($meta['description']) && !empty($meta['description']) && is_string($meta['description']) ) {
+				echo '<p>' 
+					. esc_html($meta['description']) . 
+					'</p>';
+			}
+		});	
 	}
 	/**
 	 * Add Woocommerce Shipping Method
