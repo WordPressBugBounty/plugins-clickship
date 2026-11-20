@@ -22,7 +22,7 @@
  */
 if ( ! class_exists( 'WC_Clickship_Shipping_Rates_Method' ) ) {
 	class WC_Clickship_Shipping_Rates_Method extends WC_Shipping_Method {
-	
+
 	 /**
      * The ClickShip API URL.
      *
@@ -59,7 +59,6 @@ if ( ! class_exists( 'WC_Clickship_Shipping_Rates_Method' ) ) {
      * @var      string    $clickship_enable    The ClickShip enable status.
      */
     protected string $clickship_enable;
-
 	
 	/**
 	 * The array of actions registered with WordPress.
@@ -223,7 +222,6 @@ if ( ! class_exists( 'WC_Clickship_Shipping_Rates_Method' ) ) {
 		foreach ( $package['contents'] as $key => $value ) {
 			$product = $value['data'];  // WC_Product object
 			$currency = get_woocommerce_currency(); // current currency shown to the buyer
-
 			$item = array(
 				'currency' => $currency,
 				'quantity' => $value ['quantity'],
@@ -233,7 +231,6 @@ if ( ! class_exists( 'WC_Clickship_Shipping_Rates_Method' ) ) {
 			);			
 			array_push($items, $item);
 		}
-
 		return $items;
 	}
 	
@@ -301,15 +298,16 @@ if ( ! class_exists( 'WC_Clickship_Shipping_Rates_Method' ) ) {
 					'description' => sanitize_text_field($value['description'] ?? '')
 				);
 				
-				$serviveName = sanitize_text_field($value['service_name']);
-
-				if (!empty($value['transitDays']) && $value['transitDays'] > 0 ) {
-					$serviveName = sprintf( __('%s (%s business days)','clickship'), sanitize_text_field($value['service_name']), sanitize_text_field($value['transitDays']));
+				$this->serviveName	= sanitize_text_field($value['service_name']);
+								
+				if($value ['transitDays'] > 0) {
+					$this->transitDays	= sanitize_text_field($value['transitDays']);
+					$this->serviveName	= sprintf( __('%s (%s business days)','clickship'), sanitize_text_field($value['service_name']), sanitize_text_field($this->transitDays) );
 				}
 
 				$rate = array(
 					'id' 	=> sanitize_text_field($value['service_code']),
-					'label' => $serviveName,
+					'label' => __($this->serviveName,'clickship'),
 					'cost' 	=> sanitize_text_field($value['total_price']).' '.sanitize_text_field($value['currency']),
 					'meta_data' => $metadata
 				);
